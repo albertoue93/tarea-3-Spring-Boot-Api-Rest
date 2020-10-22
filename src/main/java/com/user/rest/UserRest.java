@@ -29,32 +29,56 @@ public class UserRest {
 	
 	//POST
 	@PostMapping("/guardar")
-	public void guardar(@RequestBody User user) {
-		userDAO.save(user);
+	public String guardar(@RequestBody User user) {
+		try {
+			userDAO.save(user);
+			return String.format("Usuario Guardado Correctamente");
+		} catch (Exception e) {
+			// TODO: handle exception
+			return String.format("Usuario No Guardado");
+		}
 	}
+	
 	//GET
 	@GetMapping("/listar")
 	public List<User> listar(){
 		return userDAO.findAll();
 	}
+	
 	//GET BY ID
 	@GetMapping("/listar/{id}")
 	public User listarUser(@PathVariable("id") Integer id) {
 		return userDAO.findById(id).orElse(null);
 	}
+	
 	//PUT
 	@PutMapping("/actualizar")
-	public void actualizar(@RequestBody User user) {
-		User oldUser = userDAO.findById(user.getId()).orElse(null);
-		oldUser.setCed(user.getCed());
-		oldUser.setEmail(user.getEmail());
-		oldUser.setLastname(user.getLastname());
-		oldUser.setName(user.getName());
-		userDAO.save(oldUser);
+	public String actualizar(@RequestBody User user) {
+		try {
+			User oldUser = userDAO.findById(user.getId()).orElse(null);
+			oldUser.setCed(user.getCed());
+			oldUser.setEmail(user.getEmail());
+			oldUser.setLastname(user.getLastname());
+			oldUser.setName(user.getName());
+			userDAO.save(oldUser);
+			return String.format("Usuario Modificado Correctamente");
+		} catch (Exception e) {
+			// TODO: handle exception
+			return String.format("Usuario No Modificado");
+		}
+		
 	}
+	
 	//DELETE
 	@DeleteMapping("/eliminar/{id}")
-	public void eliminar(@PathVariable("id") Integer id) {
-		userDAO.deleteById(id);
+	public String eliminar(@PathVariable("id") Integer id) {
+		try {
+			userDAO.deleteById(id);
+			return String.format("Usuario Eliminado Correctamente");
+		} catch (Exception e) {
+			// TODO: handle exception
+			return String.format("Usuario No Eliminado");
+		}
+		
 	}
 }
